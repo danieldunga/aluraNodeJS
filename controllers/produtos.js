@@ -1,18 +1,35 @@
 const criaConexao = require("../db/conexao")
 
+
+function pegaLivros(conexao, funcaoCallbackSucesso, funcaoCallbackErro) {
+    conexao.query("SELECT * FROM livros", function(erro, resultado) {
+        try {
+            if (erro == null) {
+                funcaoCallbackSucesso(resultado)
+            } else {
+                funcaoCallbackErro(erro)
+            }
+        } catch (erro) {
+            console.log(erro)
+            funcaoCallbackErro(erro.message)
+        }
+    })
+}
+
 function listagemProdutos(req, resp) {
 
     const conexao = criaConexao()
     
-    // ASync geralmente não criam variável
-    conexao.query("SELECT * FROM livros", function(erro, resultado = []){
-        if (erro == null) {
+    pegaLivros(
+        conexao, 
+        function(resultado = []){
             resp.render("produtos/lista.ejs", {livros:resultado})
-        } else {
+            conexao.end()
+        },
+        function(erro){
             resp.send(erro)
         }
-        conexao.end()
-    })
+    )
 
     
 }
