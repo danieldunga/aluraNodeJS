@@ -1,6 +1,4 @@
-if (process.env.NODE_PORT == undefined) {
-    process.env.NODE_PORT = 3000
-}
+require("dotenv").config()
 
 const porta = process.env.NODE_PORT
 
