@@ -1,4 +1,4 @@
-console.log(2+2);
-for (let index = 0; index < 9; index++) {
+console.log("Brincando com o for");
+for (let index = 1; index <= 8; index++) {
     console.log(index)
 }
