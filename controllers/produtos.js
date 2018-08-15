@@ -10,9 +10,9 @@ function listagemProdutos(req, resp) {
         database: "cdc"
     })
 
-    conexao.query("SELECT * FROM livros", function(erro, livros){
+    conexao.query("SELECT * FROM livros", function(erro, resultado = []){
         if (erro == null) {
-            resp.render("produtos/lista.ejs", {livros})
+            resp.render("produtos/lista.ejs", {livros:resultado})
             conexao.end()
         } else {
             resp.send(erro)
