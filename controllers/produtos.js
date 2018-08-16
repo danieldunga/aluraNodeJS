@@ -1,26 +1,13 @@
+const produtoDAO = require("../db/produtoDAO");
+
 const criaConexao = require("../db/conexao")
 
-
-function pegaLivros(conexao, funcaoCallbackSucesso, funcaoCallbackErro) {
-    conexao.query("SELECT * FROM livros", function(erro, resultado) {
-        try {
-            if (erro == null) {
-                funcaoCallbackSucesso(resultado)
-            } else {
-                funcaoCallbackErro(erro)
-            }
-        } catch (erro) {
-            console.log(erro)
-            funcaoCallbackErro(erro.message)
-        }
-    })
-}
 
 function listagemProdutos(req, resp) {
 
     const conexao = criaConexao()
     
-    pegaLivros(
+    produtoDAO.lista(
         conexao, 
         function(resultado = []){
             resp.render("produtos/lista.ejs", {livros:resultado})
@@ -42,4 +29,5 @@ function cadastroProdutos(req, resp) {
 module.exports = {
     listagem: listagemProdutos,
     cadastro: cadastroProdutos
-}
+};exports.console = console;
+;exports.console = console;
