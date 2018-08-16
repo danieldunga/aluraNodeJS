@@ -24,9 +24,9 @@ function listagemProdutos(req, resp) {
 function cadastroProdutos(req, resp) {
 
     livro = {
-        titulo: "2"
-        , descricao: "1234 567 890"
-        , preco: "2a"
+        titulo: "titulo 2"
+        , descricao: "bla bla bla"
+        , preco: 30
     }
 
     const conexao = connectionFactory.getConnection()

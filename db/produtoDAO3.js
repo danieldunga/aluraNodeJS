@@ -27,7 +27,7 @@ class ProdutoDAO {
                 if(erro == null) {
                     cbSucesso()
                 } else {
-                    cbErro(erro.toString)
+                    cbErro(erro)
                 }
             } catch (error) {
                 cbErro(error)
