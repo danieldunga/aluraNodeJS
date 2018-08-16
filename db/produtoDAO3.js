@@ -21,8 +21,18 @@ class ProdutoDAO {
         });
     }
     
-    save(funcaoCallbakSucesso, funcaoCallbackErro) {
-    
+    save(livro, cbSucesso, cbErro) {
+        this.conexao.query("INSERT INTO livros set ?", livro, function(erro){
+            try {
+                if(erro == null) {
+                    cbSucesso()
+                } else {
+                    cbErro(erro.toString)
+                }
+            } catch (error) {
+                cbErro(error)
+            }
+        })
     }
 }
 

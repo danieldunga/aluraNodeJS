@@ -23,6 +23,25 @@ function listagemProdutos(req, resp) {
 
 function cadastroProdutos(req, resp) {
 
+    livro = {
+        titulo: "2"
+        , descricao: "1234 567 890"
+        , preco: "2a"
+    }
+
+    const conexao = connectionFactory.getConnection()
+    const produtoDAO = new ProdutoDAO(conexao);
+    produtoDAO.save(
+        livro
+        , function cbSucesso() {
+            resp.redirect("/produtos")
+            conexao.end()
+        }
+        , function cbErro(erro) {
+            resp.send("Erro 123 " + erro)
+        }
+    )
+
 }
 
 function mostraForm(req, resp) {
