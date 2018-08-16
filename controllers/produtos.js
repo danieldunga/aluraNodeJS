@@ -1,11 +1,11 @@
-const Conn = require("../db/conexao")
+const connectionFactory = require("../db/conexao")
 
 // função construtora
 const ProdutoDAO = require("../db/produtoDAO3")
 
 function listagemProdutos(req, resp) {
     
-    const conexao = Conn.getConnection()
+    const conexao = connectionFactory.getConnection()
 
     //const produtoDAO = ProdutoDAO(conexao); // Para produtoDAO
     const produtoDAO = new ProdutoDAO(conexao);
@@ -25,8 +25,13 @@ function cadastroProdutos(req, resp) {
 
 }
 
+function mostraForm(req, resp) {
+    resp.render("produtos/form", {validationErrors:[]})
+}
+
 // revealing module
 module.exports = {
     listagem: listagemProdutos,
-    cadastro: cadastroProdutos
+    cadastro: cadastroProdutos,
+    form: mostraForm
 }
