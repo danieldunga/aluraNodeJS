@@ -25,6 +25,7 @@ module.exports = function ProdutoDAO(conexao) {
     // private
     const x = "sei la"
 
+    // public
     return {
         lista: (funcaoCallbakSucesso, funcaoCallbackErro) => 
             pegaLivros(conexao, funcaoCallbakSucesso, funcaoCallbackErro),

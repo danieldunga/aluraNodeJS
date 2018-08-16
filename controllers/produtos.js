@@ -1,12 +1,14 @@
 const criaConexao = require("../db/conexao")
 
 // função construtora
-const ProdutoDAO = require("../db/produtoDAO")
+const ProdutoDAO = require("../db/produtoDAO2")
 
 function listagemProdutos(req, resp) {
     
     const conexao = criaConexao()
-    const produtoDAO = ProdutoDAO(conexao);
+
+    //const produtoDAO = ProdutoDAO(conexao); // Para produtoDAO
+    const produtoDAO = new ProdutoDAO(conexao);
     
     produtoDAO.lista(
         function(resultado = []){
