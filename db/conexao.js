@@ -1,9 +1,6 @@
 const mysql = require("mysql")
 
-
-
-// Módulo é sempre singleton. Feito função para ser executado várias vezes
-module.exports = function(){
+function criaConexao(){
     console.log("Criando conexão")
     return mysql.createConnection({
         host: process.env.DB_HOST,
@@ -12,4 +9,8 @@ module.exports = function(){
         password: process.env.DB_PASS,
         database: process.env.DB_NAME
     })
+}
+
+module.exports = {
+    getConnection: criaConexao
 }

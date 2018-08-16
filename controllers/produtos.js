@@ -1,11 +1,11 @@
-const criaConexao = require("../db/conexao")
+const Conn = require("../db/conexao")
 
 // função construtora
 const ProdutoDAO = require("../db/produtoDAO3")
 
 function listagemProdutos(req, resp) {
     
-    const conexao = criaConexao()
+    const conexao = Conn.getConnection()
 
     //const produtoDAO = ProdutoDAO(conexao); // Para produtoDAO
     const produtoDAO = new ProdutoDAO(conexao);
