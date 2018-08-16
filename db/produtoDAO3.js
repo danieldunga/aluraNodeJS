@@ -1,4 +1,4 @@
-module.exports = class ProdutoDAO {
+class ProdutoDAO {
 
     constructor(conexao) {
         this.conexao = conexao
@@ -25,3 +25,5 @@ module.exports = class ProdutoDAO {
     
     }
 }
+
+module.exports = ProdutoDAO
