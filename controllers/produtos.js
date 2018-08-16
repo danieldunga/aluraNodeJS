@@ -1,29 +1,37 @@
-const criaConexao = require("../db/conexao")
+const connectionFactory = require("../db/conexao")
+
+// função construtora
+const ProdutoDAO = require("../db/produtoDAO3")
 
 function listagemProdutos(req, resp) {
-
-    const conexao = criaConexao()
     
-    // ASync geralmente não criam variável
-    conexao.query("SELECT * FROM livros", function(erro, resultado = []){
-        if (erro == null) {
+    const conexao = connectionFactory.getConnection()
+
+    //const produtoDAO = ProdutoDAO(conexao); // Para produtoDAO
+    const produtoDAO = new ProdutoDAO(conexao);
+    
+    produtoDAO.lista(
+        function(resultado = []){
             resp.render("produtos/lista.ejs", {livros:resultado})
             conexao.end()
-        } else {
+        },
+        function(erro){
             resp.send(erro)
         }
-        
-    })
-
-    
+    )
 }
 
 function cadastroProdutos(req, resp) {
 
 }
 
+function mostraForm(req, resp) {
+    resp.render("produtos/form", {validationErrors:[]})
+}
+
 // revealing module
 module.exports = {
     listagem: listagemProdutos,
-    cadastro: cadastroProdutos
+    cadastro: cadastroProdutos,
+    form: mostraForm
 }
