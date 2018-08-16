@@ -1,4 +1,5 @@
 const connectionFactory = require("../db/conexao")
+const queryString = require("query-string")
 
 // função construtora
 const ProdutoDAO = require("../db/produtoDAO3")
@@ -23,24 +24,33 @@ function listagemProdutos(req, resp) {
 
 function cadastroProdutos(req, resp) {
 
-    livro = {
-        titulo: "titulo 2"
-        , descricao: "bla bla bla"
-        , preco: 30
-    }
+    let bodyTexto = ""
 
-    const conexao = connectionFactory.getConnection()
-    const produtoDAO = new ProdutoDAO(conexao);
-    produtoDAO.save(
-        livro
-        , function cbSucesso() {
-            resp.redirect("/produtos")
-            conexao.end()
-        }
-        , function cbErro(erro) {
-            resp.send("Erro 123 " + erro)
-        }
-    )
+    req.on("data", function (chunk) {
+        bodyTexto += chunk.toString()
+    }) 
+
+    req.on("end", function(){
+
+        req.body = queryString.parse(bodyTexto)
+
+        livro = req.body
+    
+        const conexao = connectionFactory.getConnection()
+        const produtoDAO = new ProdutoDAO(conexao);
+        produtoDAO.save(
+            livro
+            , function cbSucesso() {
+                resp.redirect("/produtos")
+                conexao.end()
+            }
+            , function cbErro(erro) {
+                //resp.send("Erro 123 " + erro)
+                resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
+            }
+        )
+    })
+
 
 }
 
