@@ -16,11 +16,20 @@ function pegaLivros(conexao, funcaoCallbackSucesso, funcaoCallbackErro) {
     });
 }
 
-function cadastro() {
+function cadastraLivros(conexao, funcaoCallbakSucesso, funcaoCallbackErro) {
 
 }
 
-module.exports = {
-    lista: pegaLivros,
-    save: cadastro
+module.exports = function ProdutoDAO(conexao) {
+
+    // private
+    const x = "sei la"
+
+    return {
+        lista: (funcaoCallbakSucesso, funcaoCallbackErro) => 
+            pegaLivros(conexao, funcaoCallbakSucesso, funcaoCallbackErro),
+        
+        save: (funcaoCallbakSucesso, funcaoCallbackErro) =>
+            cadastraLivros(conexao, funcaoCallbakSucesso, funcaoCallbackErro)
+    }
 }

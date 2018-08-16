@@ -1,14 +1,14 @@
-const produtoDAO = require("../db/produtoDAO");
-
 const criaConexao = require("../db/conexao")
 
+// função construtora
+const ProdutoDAO = require("../db/produtoDAO")
 
 function listagemProdutos(req, resp) {
-
+    
     const conexao = criaConexao()
+    const produtoDAO = ProdutoDAO(conexao);
     
     produtoDAO.lista(
-        conexao, 
         function(resultado = []){
             resp.render("produtos/lista.ejs", {livros:resultado})
             conexao.end()
@@ -17,8 +17,6 @@ function listagemProdutos(req, resp) {
             resp.send(erro)
         }
     )
-
-    
 }
 
 function cadastroProdutos(req, resp) {
@@ -29,5 +27,4 @@ function cadastroProdutos(req, resp) {
 module.exports = {
     listagem: listagemProdutos,
     cadastro: cadastroProdutos
-};exports.console = console;
-;exports.console = console;
+}
