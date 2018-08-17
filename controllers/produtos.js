@@ -3,7 +3,7 @@ const connectionFactory = require("../db/conexao")
 // função construtora
 const ProdutoDAO = require("../db/produtoDAO3")
 
-function listagemProdutos(req, resp) {
+function listagemProdutos(req, resp, callbackNext) {
     
     const conexao = connectionFactory.getConnection()
     
@@ -27,20 +27,32 @@ function cadastroProdutos(req, resp, callbackNext) {
 
     livro = req.body
 
-    const conexao = connectionFactory.getConnection()
-    const produtoDAO = new ProdutoDAO(conexao);
-    produtoDAO.save(
-        livro
-        , function cbSucesso() {
-            resp.redirect("/produtos")
-            conexao.end()
-        }
-        , function cbErro(erro) {
-            //resp.send("Erro 123 " + erro)
-            //resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
-            callbackNext(erro)
-        }
-    )
+    req.assert("preco", "Preço inválido").isNumeric()
+    req.assert("titulo", "Título obrigatório").notEmpty()
+
+    let listaErros = req.validationErrors()
+
+    if(!listaErros) {
+        const conexao = connectionFactory.getConnection()
+        const produtoDAO = new ProdutoDAO(conexao);
+        produtoDAO.save(
+            livro
+            , function cbSucesso() {
+                resp.redirect("/produtos")
+                conexao.end()
+            }
+            , function cbErro(erro) {
+                //resp.send("Erro 123 " + erro)
+                //resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
+                callbackNext(erro)
+            }
+        )
+    } else {
+        resp.render("produtos/form", {
+            validationErrors: listaErros
+        })
+    }
+
 }
 
 function mostraForm(req, resp) {

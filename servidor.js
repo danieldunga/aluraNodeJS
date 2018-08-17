@@ -6,6 +6,9 @@ servidor.set("view engine", "ejs") // Define o parão dos arquivos de view do ex
 servidor.use(express.urlencoded())
 servidor.use(express.json())
 
+const expressValidator = require("express-validator")
+servidor.use(expressValidator())
+
 servidor.get("/", function (pedido, resposta) {
     resposta.render("home.ejs")
 })
@@ -20,7 +23,7 @@ servidor.use(function(erro, req, resp, callbackNext) {
     } else {
         console.error(erro)
         resp.render("erros/erro", {
-            erro: "500 - Deu ruim! = " + erro
+            erro: "500 - Deu ruim!"
         })
     }
 })
