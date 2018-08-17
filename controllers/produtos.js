@@ -1,5 +1,4 @@
 const connectionFactory = require("../db/conexao")
-const queryString = require("query-string")
 
 // função construtora
 const ProdutoDAO = require("../db/produtoDAO3")
@@ -7,7 +6,7 @@ const ProdutoDAO = require("../db/produtoDAO3")
 function listagemProdutos(req, resp) {
     
     const conexao = connectionFactory.getConnection()
-
+    
     //const produtoDAO = ProdutoDAO(conexao); // Para produtoDAO
     const produtoDAO = new ProdutoDAO(conexao);
     
@@ -22,19 +21,7 @@ function listagemProdutos(req, resp) {
     )
 }
 
-function criaBody(req, resp, callbackNext){
 
-    let bodyTexto = ""
-    
-    req.on("data", function (chunk) {
-        bodyTexto += chunk.toString()
-    }) 
-    
-    req.on("end", function(){
-        req.body = queryString.parse(bodyTexto)
-        callbackNext()
-    })
-}
 
 function cadastroProdutos(req, resp) {
 
@@ -62,7 +49,6 @@ function mostraForm(req, resp) {
 // revealing module
 module.exports = {
     listagem: listagemProdutos,
-    criaBody: criaBody,
     cadastro: cadastroProdutos,
     form: mostraForm
 }
