@@ -14,4 +14,21 @@ require("./routes/produtos")(servidor)
 
 servidor.use(express.static("./public"));
 
+servidor.use(function(erro, req, resp, callbackNext) {
+    if (process.env.NODE_ENV == "dev") {
+        resp.render(erro)
+    } else {
+        console.error(erro)
+        resp.render("erros/erro", {
+            erro: "500 - Deu ruim! = " + erro
+        })
+    }
+})
+
+servidor.use(function(req, resp) {
+    resp.render("erros/erro", {
+        erro: "404 - página não encontrada."
+    })
+})
+
 module.exports = servidor

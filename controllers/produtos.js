@@ -16,14 +16,14 @@ function listagemProdutos(req, resp) {
             conexao.end()
         },
         function(erro){
-            resp.send(erro)
+            callbackNext(erro)
         }
     )
 }
 
 
 
-function cadastroProdutos(req, resp) {
+function cadastroProdutos(req, resp, callbackNext) {
 
     livro = req.body
 
@@ -37,7 +37,8 @@ function cadastroProdutos(req, resp) {
         }
         , function cbErro(erro) {
             //resp.send("Erro 123 " + erro)
-            resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
+            //resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
+            callbackNext(erro)
         }
     )
 }
