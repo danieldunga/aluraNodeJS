@@ -22,36 +22,37 @@ function listagemProdutos(req, resp) {
     )
 }
 
-function cadastroProdutos(req, resp) {
+function criaBody(req, resp, callbackNext){
 
     let bodyTexto = ""
-
+    
     req.on("data", function (chunk) {
         bodyTexto += chunk.toString()
     }) 
-
-    req.on("end", function(){
-
-        req.body = queryString.parse(bodyTexto)
-
-        livro = req.body
     
-        const conexao = connectionFactory.getConnection()
-        const produtoDAO = new ProdutoDAO(conexao);
-        produtoDAO.save(
-            livro
-            , function cbSucesso() {
-                resp.redirect("/produtos")
-                conexao.end()
-            }
-            , function cbErro(erro) {
-                //resp.send("Erro 123 " + erro)
-                resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
-            }
-        )
+    req.on("end", function(){
+        req.body = queryString.parse(bodyTexto)
+        callbackNext()
     })
+}
 
+function cadastroProdutos(req, resp) {
 
+    livro = req.body
+
+    const conexao = connectionFactory.getConnection()
+    const produtoDAO = new ProdutoDAO(conexao);
+    produtoDAO.save(
+        livro
+        , function cbSucesso() {
+            resp.redirect("/produtos")
+            conexao.end()
+        }
+        , function cbErro(erro) {
+            //resp.send("Erro 123 " + erro)
+            resp.render("produtos/form", {validationErrors:[{msg:"ja era!"},{msg:erro}]})
+        }
+    )
 }
 
 function mostraForm(req, resp) {
@@ -61,6 +62,7 @@ function mostraForm(req, resp) {
 // revealing module
 module.exports = {
     listagem: listagemProdutos,
+    criaBody: criaBody,
     cadastro: cadastroProdutos,
     form: mostraForm
 }
