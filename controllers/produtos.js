@@ -48,7 +48,7 @@ function cadastroProdutos(req, resp, callbackNext) {
             }
         )
     } else {
-        resp.render("produtos/form", {
+        resp.status(500).render("produtos/form", {
             validationErrors: listaErros
         })
     }

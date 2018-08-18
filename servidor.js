@@ -19,17 +19,17 @@ servidor.use(express.static("./public"));
 
 servidor.use(function(erro, req, resp, callbackNext) {
     if (process.env.NODE_ENV == "dev") {
-        resp.render(erro)
+        resp.status(500).render(erro)
     } else {
         console.error(erro)
-        resp.render("erros/erro", {
+        resp.status(500).render("erros/erro", {
             erro: "500 - Deu ruim!"
         })
     }
 })
 
 servidor.use(function(req, resp) {
-    resp.render("erros/erro", {
+    resp.status(404).render("erros/erro", {
         erro: "404 - página não encontrada."
     })
 })
