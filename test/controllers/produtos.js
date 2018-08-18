@@ -26,14 +26,21 @@ describe("Produto Controller", function() {
                     preco: 10,
                     descricao: ""
             })
-            .expect(500, callbackDone)
+            .expect(400, callbackDone)
     })
 
     it("direcionar para erro 404 em página que não existe", function(callbackDone) {
         requestServidor
-            .post("/404")
-            .set("Content-Type", "application/json")
+            .get("/404")
             .expect(404, callbackDone)
+    })
+
+    it("listar como json", function(callbackDone) {
+        requestServidor
+            .get("/produtos")
+            .set("Accept", "application/json")
+            .expect("Content-Type", "application/json; charset=utf-8")
+            .expect(200, callbackDone)
     })
 
     it("Teste OK", function(callbackDone) {

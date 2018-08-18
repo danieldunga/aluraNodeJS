@@ -12,7 +12,12 @@ function listagemProdutos(req, resp, callbackNext) {
     
     produtoDAO.lista(
         function(resultado = []){
-            resp.render("produtos/lista.ejs", {livros:resultado})
+            
+            resp.format({
+                json: () => resp.send({livros:resultado})
+                ,html: () => resp.render("produtos/lista.ejs", {livros:resultado})
+            })
+            
             conexao.end()
         },
         function(erro){
@@ -48,9 +53,11 @@ function cadastroProdutos(req, resp, callbackNext) {
             }
         )
     } else {
-        resp.status(500).render("produtos/form", {
-            validationErrors: listaErros
-        })
+        resp
+            .status(400)
+            .render("produtos/form", {
+                validationErrors: listaErros
+            })
     }
 
 }
